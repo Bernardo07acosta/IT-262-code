@@ -1,0 +1,44 @@
+google.charts.load('current', {
+   'packages': ['gantt']
+ });
+ google.charts.setOnLoadCallback(drawChart);
+
+ function daysToMilliseconds(days) {
+   return days * 24 * 60 * 60 * 1000;
+ }
+
+
+
+ function drawChart() {
+
+   var data = new google.visualization.DataTable();
+   data.addColumn('string', 'Task ID');
+   data.addColumn('string', 'Task Name');
+   data.addColumn('date', 'Start Date');
+   data.addColumn('date', 'End Date');
+   data.addColumn('number', 'Duration');
+   data.addColumn('number', 'Percent Complete');
+   data.addColumn('string', 'Dependencies');
+
+   data.addRows([
+     ['Task1', 'Initiate', new Date(2022, 0, 11), new Date(2022, 0, 18), null, 100, null],
+     ['Task2', 'Plan', new Date(2022, 0, 19), new Date(2022, 0, 28), null, 100, 'Task1'],
+     ['Task3', 'Execute', new Date(2022, 0, 29), new Date(2022, 1, 17), null, 100, 'Task2'],
+     ['Task4', 'Analysis', new Date(2022, 0, 29), new Date(2022, 0, 31), null, 100, 'Task3'],
+     ['Task5', 'Design', new Date(2022, 1, 1), new Date(2022, 1, 4), null, 100, 'Task3'],
+     ['Task6', 'Code', new Date(2022, 1, 5), new Date(2022, 1, 10), null, 100, 'Task3'],
+     ['Task7', 'Test', new Date(2022, 1, 10), new Date(2022, 1, 15), null, 100, 'Task3'],
+     ['Task8', 'Deploy', new Date(2022, 1, 16), new Date(2022, 1, 17), null, 100, 'Task3'],
+     ['Task9', 'Evaluate', new Date(2022, 1, 18), new Date(2022, 1, 20), null, 100, 'Task3,Task4,Task5,Task6,Task7,Task8'],
+     ['Task10', 'Close', new Date(2022, 1, 21), new Date(2022, 1, 22), null, 50, 'Task9, '],
+
+   ]);
+
+   var options = {
+     height: 500
+   };
+
+   var chart = new google.visualization.Gantt(document.getElementById('chart_div'));
+
+   chart.draw(data, options);
+ }
