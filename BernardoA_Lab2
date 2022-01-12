@@ -1,0 +1,89 @@
+import pandas as pd
+import math 
+
+#read data 
+dataT=pd.read_csv('/content/drive/MyDrive/262-CBA.csv')
+print(dataT)
+
+#results 
+#  years  developmentCost  operationalCost  valueOfBenefits
+# 0      0             -100                0                0
+# 1      1              -30              -10               25
+# 2      2                0              -15               55
+# 3      3                0              -15               85
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+discountRate=0.05
+#the compounding discount over the years
+
+#create a list of 4 0 elements
+discountFactor=[0,0,0,0]
+
+for year in dataT['years']:
+  discountFactor[year]=1/math.pow(1+discountRate, year)
+
+dataT['discountFactor']=[round(num, 2) for num in discountFactor]
+print(dataT)
+
+result=math.pow(2,2)
+print('\nIf you multiply 2 times its self it should be equal to: ',result) 
+
+#results 
+#    years  developmentCost  operationalCost  valueOfBenefits  discountFactor
+# 0      0             -100                0                0            1.00
+# 1      1              -30              -10               25            0.95
+# 2      2                0              -15               55            0.91
+# 3      3                0              -15               85            0.86
+
+#If you multiply 2 times its self it should be equal to:  4.0
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#calculate Net benefits/cost for each year
+# you sum all the benift & cost values
+
+#initital a list of 4 - i have years 0 to 4
+NetBC=[0,0,0,0]
+
+for year in dataT['years']:
+  NetBC[year]= dataT['developmentCost'][year]+dataT['operationalCost'][year]+dataT['valueOfBenefits'][year]
+
+dataT["NetBC"]=NetBC
+print (dataT)
+print('\n')
+print( 'This is '+'Bernardo Acostas work')
+
+#results
+#   years  developmentCost  ...  discountFactor  NetBC
+# 0      0             -100  ...            1.00   -100
+# 1      1              -30  ...            0.95    -15
+# 2      2                0  ...            0.91     40
+# 3      3                0  ...            0.86     70
+
+# [4 rows x 6 columns]
+
+
+# This is Bernardo Acostas work
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#calculate Net present value
+
+#initialize an empty list of 4 items- 1 for each year
+print('Bernardo Acostas work!\n')
+NPV=[0,0,0,0]
+
+for year in dataT["years"]:
+  NPV[year]=dataT['NetBC'][year]*dataT['discountFactor'][year]
+
+dataT['NPV']=[round(num,2 )for num in NPV]
+print(dataT)
+
+#results
+# Bernardo Acostas work!
+
+#    years  developmentCost  operationalCost  ...  discountFactor  NetBC     NPV
+# 0      0             -100                0  ...            1.00   -100 -100.00
+# 1      1              -30              -10  ...            0.95    -15  -14.25
+# 2      2                0              -15  ...            0.91     40   36.40
+# 3      3                0              -15  ...            0.86     70   60.20
+
+# [4 rows x 7 columns]
+
+
